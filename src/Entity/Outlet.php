@@ -26,6 +26,11 @@ class Outlet
     #[ORM\OneToOne(mappedBy: 'outlet', cascade: ['persist', 'remove'])]
     private ?Products $products = null;
 
+    public function __toString()
+    {
+        return $this->getPercentOff();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

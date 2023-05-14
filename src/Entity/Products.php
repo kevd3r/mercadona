@@ -32,6 +32,12 @@ class Products
     #[ORM\OneToOne(inversedBy: 'products', cascade: ['persist', 'remove'])]
     private ?Outlet $outlet = null;
 
+    public function __toString()
+    {
+        return $this->getName().' - '.$this->getPrice().' €';
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
