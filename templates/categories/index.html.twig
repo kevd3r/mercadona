@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categories index{% endblock %}
+
+{% block body %}
+    <div class="category-main">
+    <h1>Categories index</h1>
+    <div class="dropdown show ">
+        <a class="btn btn-primary dropdown-toggle custom-dd-btn" href="#" role="button" id="menuDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Menu
+        </a>
+        <div class="dropdown-menu dropright " aria-labelledby="menuDropdown">
+            {% for category in categories %}
+                <a class="dropdown-item" href="#{{ category.name }}">{{ category.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    
+    {% for category in categories %}
+    <div id="{{ category.name }}" class="category">{{ category.name | upper}}</div>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 justify-content">
+        {% for product in category.getProducts() %}
+            <div class="col">
+                <div class="card shadow-sm custom-card">
+                    <div class="card-img card-img-custom">
+                        {% if product.imageName %}
+                            <img src="{{ asset('/images/products/' ~ product.imageName) }}" class="card-img-top img-fluid" alt="product image"/>
+                        {% else %}
+                            <img src="{{ asset('/images/products/default.jpg') }}" class="card-img-top img-fluid" alt="default product image"/>
+                        {% endif %}
+                    </div>
+                    <div class="card-title">{{ product.name | upper }}</div>
+                    <div class="card-body card-body-custom pt-0 pb-0">
+                        <p class="card-text normal-price-custom text-center">{{ product.price }} €</p>
+                        <div class="is-outlet">
+                            <p class="card-text custom-price text-center">
+                                {% if product.outlet == null %}
+                                    {{ "" }}
+                                {% elseif date() > product.outlet.endDate %}
+                                    {{ "" }}
+                                {% else %}
+                                    {{ " - " ~ product.outlet.percentOff ~ " % " }}
+                                    {{ " New Price : " ~ (product.price - (product.price * product.outlet.percentOff / 100)) ~ " €" }}
+                                {% endif %}
+                            </p>
+                            {% if product.outlet %}
+                                <p class="card-text text-center">{{ "from " ~ product.outlet.startDate.format('d F Y') ~ " to " ~ product.outlet.endDate.format('d F Y') }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="btn-center">
+                            <button class="btn btn-primary m-auto" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ product.id }}" aria-expanded="false" aria-controls="collapse-{{ product.id }}">
+                                Lire la suite
+                            </button>
+                            <div class="collapse" id="collapse-{{ product.id }}">
+                                <p class="card-text card-text-description">{{ product.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}
+</div>
+
+
+{% endblock %}
