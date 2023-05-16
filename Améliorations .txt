@@ -1,0 +1,1 @@
+- quand un event va être supprimé => avertir les admins que la promotion va arriver en dateend  afin que celle-ci puisse être modifiée

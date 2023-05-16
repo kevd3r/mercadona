@@ -3,46 +3,12 @@
 {% block title %}Catalogue{% endblock %}
 
 {% block body %}
+
     <h1 id="title">Catalogue</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Image</th>
-                <th>UpdatedAt</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for product in products %}
-            <tr>
-                <td>{{ product.id }}</td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.Image }}</td>
-                <td>{{ product.imageName }}</td>
-                <td>{{ product.imageSize }}</td>
-                <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_products_show', {'id': product.id}) }}">show</a>
-   
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
     <div class="container">
-
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
        {% for product in products %}
-        <div class="col ">
+        <div class="col">
           <div class="card shadow-sm custom-card">
             <div class="card-img card-img-custom">
                 {% if product.imageName %}
@@ -52,41 +18,33 @@
                 {% endif %}
             </div>
             <div class="card-title">{{ product.name | upper }}</div>
-            <div class="card-body">
-              <p class="card-text">{{ product.price }} €</p>
-              <p class="card-text">{{ product.description }}</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-body-secondary">9 mins</small>
+            <div class="card-body card-body-custom pt-0 pb-0">
+              <p class="card-text normal-price-custom text-center">{{ product.price }} € </p>
+              <div class="is-outlet">
+              <p class="card-text custom-price text-center">
+                {% if product.outlet == null %}
+                  {{ "" }}
+                  {% elseif date() > product.outlet.endDate %}
+                    {{ "" }}
+                  {% else %}
+                    {{ " - " ~ product.outlet.percentOff ~ " % " }}
+                    {{ " New Price : " ~ (product.price - ( product.price * product.outlet.percentOff / 100)) ~ " €"}}</p>
+                     <p class="card-text text-center">{{ "from " ~ product.outlet.startDate.format('d F Y') ~ " to " ~ product.outlet.endDate.format('d F Y')}}</p>
+
+                {% endif %}
               </div>
-            </div>
+              <div class="btn-center">
+                <button class="btn btn-primary m-auto" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ product.id }}" aria-expanded="false" aria-controls="collapse-{{ product.id }}">
+                 Lire la suite
+                </button>
+                <div class="collapse" id="collapse-{{ product.id }}">
+                  <p class="card-text card-text-description">{{ product.description }}</p>
+                </div>
+              </div>
+              </div>
           </div>
         </div>
         {% endfor %}
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-body-secondary">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-       
-
-    
-
       </div>
     </div>
-
-
 {% endblock %}
