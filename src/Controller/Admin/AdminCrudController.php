@@ -43,7 +43,7 @@ class AdminCrudController extends AbstractCrudController
             ;
         $fields[] = $password;
         
-        $roles=['ROLE_ADMIN','ROLE_USER'];
+        $roles=['ROLE_ADMIN'];
 
         $fields[] = ChoiceField::new('roles')
                                 ->setChoices(array_combine($roles,$roles))

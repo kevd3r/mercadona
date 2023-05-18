@@ -20,3 +20,5 @@
 ###< symfony/phpunit-bridge ###
 ###< images uploaded ###
 /public/images/products
+###< text files ###
+*.txt
