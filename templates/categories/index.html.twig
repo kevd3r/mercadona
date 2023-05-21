@@ -26,7 +26,7 @@
                         {% if product.imageName %}
                             <img src="{{ asset('/images/products/' ~ product.imageName) }}" class="card-img-top img-fluid" alt="product image"/>
                         {% else %}
-                            <img src="{{ asset('/images/products/default.jpg') }}" class="card-img-top img-fluid" alt="default product image"/>
+                            <img src="{{ asset('/images/assets/default.jpg') }}" class="card-img-top img-fluid" alt="default product image"/>
                         {% endif %}
                     </div>
                     <div class="card-title">{{ product.name | upper }}</div>
